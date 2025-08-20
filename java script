@@ -1,0 +1,122 @@
+// script.js
+
+// Questões e respostas
+const questions = [
+    {
+        question: "Qual planeta é conhecido como o 'Planeta Vermelho'?",
+        options: ["Vênus", "Terra", "Marte", "Júpiter"],
+        correct: 2
+    },
+    {
+        question: "Qual é o maior planeta do Sistema Solar?",
+        options: ["Saturno", "Júpiter", "Urano", "Netuno"],
+        correct: 1
+    },
+    {
+        question: "O que é um buraco negro?",
+        options: ["Uma estrela morrendo", "Uma região do espaço com gravidade extremamente forte", "Uma lua de Júpiter", "Uma galáxia distante"],
+        correct: 1
+    },
+    {
+        question: "Quantos planetas existem no Sistema Solar?",
+        options: ["8", "9", "7", "10"],
+        correct: 0
+    },
+    {
+        question: "O que é a Via Láctea?",
+        options: ["Uma estrela", "Uma galáxia", "Um planeta", "Uma lua"],
+        correct: 1
+    },
+    {
+        question: "Quem foi o primeiro homem a pisar na Lua?",
+        options: ["Yuri Gagarin", "Neil Armstrong", "Buzz Aldrin", "John Glenn"],
+        correct: 1
+    },
+    {
+        question: "O que é o cinturão de asteroides?",
+        options: ["Uma área cheia de planetas", "Uma área entre Marte e Júpiter com asteroides", "Uma lua de Saturno", "Uma galáxia distante"],
+        correct: 1
+    },
+    {
+        question: "Qual é a estrela mais próxima da Terra?",
+        options: ["Proxima Centauri", "Sol", "Sirius", "Alpha Centauri"],
+        correct: 1
+    },
+    {
+        question: "O que é um cometa?",
+        options: ["Uma estrela cadente", "Um planeta", "Um corpo celeste com núcleo de gás e poeira", "Um satélite natural"],
+        correct: 2
+    },
+    {
+        question: "Qual é o nome da missão que levou os primeiros humanos à Lua?",
+        options: ["Apollo 13", "Apollo 11", "Gemini 4", "Mercury 7"],
+        correct: 1
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+// Função para carregar uma pergunta
+function loadQuestion() {
+    const question = questions[currentQuestionIndex];
+    document.getElementById("question").textContent = question.question;
+
+    const optionsContainer = document.getElementById("options-container");
+    optionsContainer.innerHTML = '';
+
+    question.options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.classList.add("option");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(index);
+        optionsContainer.appendChild(button);
+    });
+
+    document.getElementById("next-button").style.display = "none";
+}
+
+// Função para verificar a resposta
+function checkAnswer(selectedIndex) {
+    const question = questions[currentQuestionIndex];
+
+    if (selectedIndex === question.correct) {
+        score++;
+    }
+
+    // Desabilitar opções após resposta
+    const options = document.querySelectorAll(".option");
+    options.forEach(option => option.disabled = true);
+
+    // Mostrar o botão de próxima pergunta
+    document.getElementById("next-button").style.display = "inline-block";
+}
+
+// Função para ir para a próxima pergunta
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+// Função para exibir o resultado
+function showResult() {
+    document.getElementById("quiz-container").style.display = "none";
+    document.getElementById("result-container").style.display = "block";
+    document.getElementById("score").textContent = `Você acertou ${score} de ${questions.length} perguntas!`;
+}
+
+// Função para reiniciar o quiz
+function restartQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    document.getElementById("result-container").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+    loadQuestion();
+}
+
+// Carregar a primeira pergunta ao iniciar
+loadQuestion();
